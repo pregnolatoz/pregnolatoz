@@ -23,6 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
+      - run: npm install
 
       - name: Generate SVG
         run: node generate-smooth-graph.js
