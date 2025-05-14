@@ -3,8 +3,9 @@
 Above all, through statistics, I was able to integrate reason, method, and purpose, putting knowledge at the service of critical analysis and decision-making with real impact.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/pregnolatoz/pregnolatoz/output/smooth-graph.svg" alt="Gráfico animado" />
+  <object type="image/svg+xml" data="https://raw.githubusercontent.com/pregnolatoz/pregnolatoz/output/smooth-graph.svg" width="100%" height="200px"></object>
 </p>
+
 
 
 ![Pregnolato's GitHub Stats](https://github-readme-stats.vercel.app/api?username=pregnolatoz&show_icons=true&bg_color=000000&title_color=00BFFF&text_color=FFFFFF&icon_color=00BFFF&border_color=00BFFF&custom_title=GitHub%20Stats)
