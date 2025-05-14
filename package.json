@@ -1,0 +1,7 @@
+{
+  "name": "smooth-svg-graph",
+  "version": "1.0.0",
+  "main": "generate-smooth-graph.js",
+  "type": "module",
+  "dependencies": {}
+}
