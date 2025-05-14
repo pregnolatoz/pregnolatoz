@@ -6,6 +6,11 @@ Above all, through statistics, I was able to integrate reason, method, and purpo
   <img src="https://pregnolatoz.github.io/pregnolatoz/smooth-graph.svg" alt="Gráfico animado" />
 </p>
 
+
+<p align="center">
+  <img src="https://pregnolatoz.github.io/pregnolatoz/smooth-graph.svg" alt="Gráfico animado" />
+</p>
+
 ![Pregnolato's GitHub Stats](https://github-readme-stats.vercel.app/api?username=pregnolatoz&show_icons=true&bg_color=000000&title_color=00BFFF&text_color=FFFFFF&icon_color=00BFFF&border_color=00BFFF&custom_title=GitHub%20Stats)
 [![Pregnolato's Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=pregnolatoz&layout=donut&bg_color=000000&title_color=00BFFF&text_color=FFFFFF&border_color=00BFFF&icon_color=00BFFF)](https://github.com/pregnolatoz/github-readme-stats)
 
