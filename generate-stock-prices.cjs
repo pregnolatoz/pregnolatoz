@@ -16,7 +16,7 @@ function getColor(value) {
 }
 
 const width = 600;
-const height = 100;
+const height = 120;
 const boxWidth = 120;
 const boxHeight = 30;
 const spacing = 20;
@@ -26,24 +26,29 @@ let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 `;
 
 tickers.forEach((ticker, i) => {
-  const x = spacing + i * (boxWidth + spacing);
-  const y = (height - boxHeight) / 2;
-  const initialValue = generateRandomPercentage();
-  const color = getColor(initialValue);
-  const keyframes = Array.from({ length: 10 })
-    .map(() => generateRandomPercentage())
-    .join(";");
+  const x = i * (boxWidth + spacing) + spacing;
+  const y = 40;
+
+  const keyframes = Array.from({ length: 10 }, () => generateRandomPercentage());
+  const animationDur = 6; // segundos
+
+  let animatedValue = ``;
+  keyframes.forEach((val, idx) => {
+    const begin = (idx * animationDur) / keyframes.length;
+    animatedValue += `
+      <tspan fill="${getColor(val)}" visibility="hidden">
+        <set attributeName="visibility" to="visible" begin="${begin}s" dur="${animationDur / keyframes.length}s" repeatCount="indefinite" />
+        ${val}%
+      </tspan>`;
+  });
 
   svgContent += `
   <g>
     <rect x="${x}" y="${y}" width="${boxWidth}" height="${boxHeight}" rx="8" ry="8"
       fill="#111" stroke="${ticker.color}" stroke-width="2"/>
     <text x="${x + 10}" y="${y + 20}" fill="#fff" font-size="14">${ticker.name}</text>
-    <text x="${x + 70}" y="${y + 20}" font-size="14" fill="${color}">
-      <tspan>
-        <animate attributeName="text" dur="6s" repeatCount="indefinite"
-          values="${keyframes}" />
-      </tspan>
+    <text x="${x + 70}" y="${y + 20}" font-size="14" text-anchor="start">
+      ${animatedValue}
     </text>
   </g>
   `;
