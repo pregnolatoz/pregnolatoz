@@ -1,40 +1,72 @@
-// generate-line-graph.cjs
+// Arquivo: generate-line-graph.cjs
+const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
 const fs = require("fs");
-const path = require("path");
 
-const outputPath = path.join(__dirname, "dist", "line-graph.svg");
+const width = 700;
+const height = 250;
 
-// Garante que a pasta 'dist' existe
-fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+const canvasRenderService = new ChartJSNodeCanvas({ width, height, backgroundColour: "#0d1117" });
 
-const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="100%" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .bg { fill: #0d1117; }
-    .line { fill: none; stroke: #1e90ff; stroke-width: 2; }
-    .axis-label { fill: #ccc; font-size: 12px; font-family: Arial, sans-serif; text-anchor: start; }
-  </style>
-  <rect width="100%" height="100%" class="bg" />
+// Gera uma série de dados simulando flutuações com leve animação na ponta
+function generateData(points = 60) {
+  let data = [];
+  let value = 100;
+  for (let i = 0; i < points; i++) {
+    value += Math.random() * 4 - 2;
+    data.push(parseFloat(value.toFixed(2)));
+  }
+  return data;
+}
 
-  <!-- Eixos Y à direita -->
-  <text x="790" y="40" class="axis-label">116.34</text>
-  <text x="790" y="80" class="axis-label">107.33</text>
-  <text x="790" y="120" class="axis-label">98.31</text>
-  <text x="790" y="160" class="axis-label">89.30</text>
-  <text x="790" y="195" class="axis-label">80.29</text>
+(async () => {
+  const data = generateData();
 
-  <!-- Gráfico animado apenas na ponta -->
-  <path class="line">
-    <animate attributeName="d" dur="5s" repeatCount="indefinite"
-      values="
-        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,90;
-        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,92;
-        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,89;
-        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,91;
-        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,90
-      " />
-  </path>
-</svg>`;
+  const config = {
+    type: "line",
+    data: {
+      labels: data.map((_, i) => i.toString()),
+      datasets: [
+        {
+          label: "Preço Simulado",
+          data,
+          borderColor: "#00bcd4",
+          backgroundColor: "transparent",
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "#cccccc"
+          },
+          grid: {
+            color: "rgba(255, 255, 255, 0.1)"
+          }
+        },
+        y: {
+          position: "right",
+          ticks: {
+            color: "#cccccc"
+          },
+          grid: {
+            color: "rgba(255, 255, 255, 0.1)"
+          }
+        }
+      }
+    }
+  };
 
-fs.writeFileSync(outputPath, svgContent);
-console.log("✅ SVG gerado em:", outputPath);
+  const imageBuffer = await canvasRenderService.renderToBuffer(config);
+  fs.mkdirSync("dist", { recursive: true });
+  fs.writeFileSync("dist/line-graph.png", imageBuffer);
+  console.log("✔ Gráfico PNG gerado com sucesso em dist/line-graph.png");
+})();
