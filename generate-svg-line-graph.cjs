@@ -74,13 +74,13 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     return `<text x="${width+5}" y="${y}" class="axis" text-anchor="start">${val}</text>`;
   }).join("\n  ")}
 
-   <!-- labels X na base -->
-  ${["11:00,12:00,13:00,14:00,15:00,16:00,17:00,18:00"].map(v => {
-    // calcule o x correspondente:
-    ${xLabels.map((hour, i) => {
-  const px = margin + (i / (xLabels.length - 1)) * (width - 2*margin - marginRight);
-  return `<text x="${px.toFixed(2)}" y="${height - 5}" class="axis" text-anchor="middle">${hour}</text>`;
-}).join("\n  ")}
+  
+    <!-- labels X na base -->
+  ${ xLabels.map((hour, i) => {
+      const px = margin + (i / (xLabels.length - 1)) * (width - 2*margin - marginRight);
+      return `<text x="${px.toFixed(2)}" y="${height - 5}" class="axis" text-anchor="middle">${hour}</text>`;
+    }).join("\n  ") }
+
 
 \`;// fim do svg
 
