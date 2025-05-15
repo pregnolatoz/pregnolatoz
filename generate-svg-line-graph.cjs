@@ -2,9 +2,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const width = 840;
+const width = 800;
 const height = 200;
 const margin = 20;
+const marginRight = 40;    // espaço extra à direita para os labels Y
 const frames = 5;
 const duration = 15; // segundos
 
@@ -44,7 +45,7 @@ const values = allFrames.map(arr => {
 }).join(";");
 
 const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
+<svg width="${width + marginRight}" height="${height}" viewBox="0 0 ${width + marginRight} ${height}"
      xmlns="http://www.w3.org/2000/svg" style="background:#0d1117">
   <style>
     .grid { stroke:#333; stroke-width:0.5; }
@@ -55,15 +56,24 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
   <!-- horizontais -->
   ${[0,0.25,0.5,0.75,1].map(v=>{
     const y = margin + v*(height-2*margin);
-    return `<line x1="${margin}" y1="${y}" x2="${width-margin}" y2="${y}" class="grid"/>`;
+    return `<line x1="${margin}" y1="${y}" x2="${width-marginRight}" y2="${y}" class="grid"/>`;
   }).join("\n  ")}
 
   <!-- labels Y -->
   ${[0,0.25,0.5,0.75,1].map(v=>{
     const y = margin + v*(height-2*margin) + 4;
     const val = (max - v*(max-min)).toFixed(2);
-    return `<text x="${width-margin+5}" y="${y}" class="axis" text-anchor="start">${val}</text>`;
+    return `<text x="${width+5}" y="${y}" class="axis" text-anchor="start">${val}</text>`;
   }).join("\n  ")}
+
+   <!-- labels X na base -->
+  ${[0,10,20,30,40,50].map(v => {
+    // calcule o x correspondente:
+    const px = margin + (v/50) * (width - margin*2 - marginRight);
+    return `<text x="${px}" y="${height-5}" class="axis" text-anchor="middle">${v}</text>`;
+  }).join("\n  ")}
+
+\`;// fim do svg
 
   <path class="line">
     <animate attributeName="d" dur="${duration}s" repeatCount="indefinite"
