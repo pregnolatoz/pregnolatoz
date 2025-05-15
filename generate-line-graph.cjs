@@ -1,101 +1,40 @@
-// File: generate-line-graph.js
-
+// generate-line-graph.cjs
 const fs = require("fs");
+const path = require("path");
 
-const width = 1920;
-const height = 400;
-const graphHeight = 300;
-const marginLeft = 80;
-const marginBottom = 40;
-const frames = 10;
-const duration = 5;
+const outputPath = path.join(__dirname, "dist", "line-graph.svg");
 
-function generateData(length = 60, start = 100, variance = 5) {
-  const points = [];
-  let value = start;
-  for (let i = 0; i < length; i++) {
-    value += (Math.random() - 0.5) * variance;
-    points.push(value);
-  }
-  return points;
-}
+// Garante que a pasta 'dist' existe
+fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-function normalizePoints(data, min, max) {
-  return data.map((v) => ((v - min) / (max - min)) * graphHeight);
-}
+const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100%" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .bg { fill: #0d1117; }
+    .line { fill: none; stroke: #1e90ff; stroke-width: 2; }
+    .axis-label { fill: #ccc; font-size: 12px; font-family: Arial, sans-serif; text-anchor: start; }
+  </style>
+  <rect width="100%" height="100%" class="bg" />
 
-function buildPath(points) {
-  const stepX = (width - marginLeft) / (points.length - 1);
-  let d = `M${marginLeft},${height - marginBottom - points[0]}`;
-  for (let i = 1; i < points.length; i++) {
-    const x = marginLeft + i * stepX;
-    const y = height - marginBottom - points[i];
-    d += ` L${x},${y}`;
-  }
-  return d;
-}
+  <!-- Eixos Y à direita -->
+  <text x="790" y="40" class="axis-label">116.34</text>
+  <text x="790" y="80" class="axis-label">107.33</text>
+  <text x="790" y="120" class="axis-label">98.31</text>
+  <text x="790" y="160" class="axis-label">89.30</text>
+  <text x="790" y="195" class="axis-label">80.29</text>
 
-function buildArea(points) {
-  const stepX = (width - marginLeft) / (points.length - 1);
-  let d = `M${marginLeft},${height - marginBottom}`;
-  for (let i = 0; i < points.length; i++) {
-    const x = marginLeft + i * stepX;
-    const y = height - marginBottom - points[i];
-    d += ` L${x},${y}`;
-  }
-  d += ` L${width},${height - marginBottom} Z`;
-  return d;
-}
-
-function buildYLabels(min, max) {
-  const labels = [];
-  for (let i = 0; i <= 4; i++) {
-    const value = max - ((max - min) / 4) * i;
-    const y = marginBottom + (graphHeight / 4) * i;
-    labels.push(`<text x="10" y="${y + 5}" fill="#ccc" font-size="24">${value.toFixed(2)}</text>`);
-  }
-  return labels.join("\n");
-}
-
-function buildSVGAnimation() {
-  const values = [];
-  const areas = [];
-  let globalMin = Infinity;
-  let globalMax = -Infinity;
-
-  const datasets = Array.from({ length: frames }, () => {
-    const raw = generateData();
-    const min = Math.min(...raw);
-    const max = Math.max(...raw);
-    if (min < globalMin) globalMin = min;
-    if (max > globalMax) globalMax = max;
-    return raw;
-  });
-
-  for (const raw of datasets) {
-    const normalized = normalizePoints(raw, globalMin, globalMax);
-    values.push(buildPath(normalized));
-    areas.push(buildArea(normalized));
-  }
-
-  const yLabels = buildYLabels(globalMin, globalMax);
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="background:#0d1117;font-family:sans-serif">
-  ${yLabels}
-  <path fill="rgba(30,144,255,0.2)">
-    <animate attributeName="d" dur="${duration}s" repeatCount="indefinite"
-      values="${areas.join(";\n")}" />
-  </path>
-  <path stroke="#1e90ff" stroke-width="3" fill="none">
-    <animate attributeName="d" dur="${duration}s" repeatCount="indefinite"
-      values="${values.join(";\n")}" />
+  <!-- Gráfico animado apenas na ponta -->
+  <path class="line">
+    <animate attributeName="d" dur="5s" repeatCount="indefinite"
+      values="
+        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,90;
+        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,92;
+        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,89;
+        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,91;
+        M0,120 L100,110 L200,115 L300,110 L400,100 L500,105 L600,100 L700,95 L800,90
+      " />
   </path>
 </svg>`;
-}
 
-// Salvar
-const svgContent = buildSVGAnimation();
-fs.mkdirSync("dist", { recursive: true });
-fs.writeFileSync("dist/smooth-graph.svg", svgContent);
-console.log("✔ SVG animado gerado com sucesso!");
+fs.writeFileSync(outputPath, svgContent);
+console.log("✅ SVG gerado em:", outputPath);
