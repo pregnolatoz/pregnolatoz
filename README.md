@@ -7,7 +7,7 @@ Above all, through statistics, I was able to integrate reason, method, and purpo
 </p>
 
 <p align="center">
-  <img src="https://pregnolatoz.github.io/pregnolatoz/line-graph.svg" alt="Line Chart" />
+  <img src="https://pregnolatoz.github.io/pregnolatoz/stocks-ticker.svg" />
 </p>
 
 ![Pregnolato's GitHub Stats](https://github-readme-stats.vercel.app/api?username=pregnolatoz&show_icons=true&bg_color=000000&title_color=00BFFF&text_color=FFFFFF&icon_color=00BFFF&border_color=00BFFF&custom_title=GitHub%20Stats)
