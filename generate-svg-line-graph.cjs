@@ -6,7 +6,7 @@ const width = 800;
 const height = 200;
 const margin = 20;
 const frames = 5;
-const duration = 5; // segundos
+const duration = 15; // segundos
 
 function generateData(len = 60, start = 100, variance = 2) {
   const pts = [];
