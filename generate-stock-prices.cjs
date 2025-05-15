@@ -15,11 +15,12 @@ function getColor(value) {
   return value > 0 ? "#00ff90" : value < 0 ? "#ff4d4d" : "#cccccc";
 }
 
-const width = 600;
+const width = 700;
 const height = 120;
-const boxWidth = 120;
+const boxWidth = 130;
 const boxHeight = 30;
 const spacing = 20;
+const animationDur = 6;
 
 let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background:#0d1117" font-family="Arial, sans-serif">
@@ -28,19 +29,7 @@ let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 tickers.forEach((ticker, i) => {
   const x = i * (boxWidth + spacing) + spacing;
   const y = 40;
-
-  const keyframes = Array.from({ length: 10 }, () => generateRandomPercentage());
-  const animationDur = 6; // segundos
-
-  let animatedValue = ``;
-  keyframes.forEach((val, idx) => {
-    const begin = (idx * animationDur) / keyframes.length;
-    animatedValue += `
-      <tspan fill="${getColor(val)}" visibility="hidden">
-        <set attributeName="visibility" to="visible" begin="${begin}s" dur="${animationDur / keyframes.length}s" repeatCount="indefinite" />
-        ${val}%
-      </tspan>`;
-  });
+  const keyframes = Array.from({ length: 6 }, () => generateRandomPercentage());
 
   svgContent += `
   <g>
@@ -48,7 +37,19 @@ tickers.forEach((ticker, i) => {
       fill="#111" stroke="${ticker.color}" stroke-width="2"/>
     <text x="${x + 10}" y="${y + 20}" fill="#fff" font-size="14">${ticker.name}</text>
     <text x="${x + 70}" y="${y + 20}" font-size="14" text-anchor="start">
-      ${animatedValue}
+  `;
+
+  keyframes.forEach((val, idx) => {
+    const begin = (idx * animationDur) / keyframes.length;
+    const color = getColor(val);
+    svgContent += `
+      <tspan fill="${color}" visibility="hidden">
+        <set attributeName="visibility" to="visible" begin="${begin}s" dur="${animationDur / keyframes.length}s" repeatCount="indefinite" />
+        ${val}%
+      </tspan>`;
+  });
+
+  svgContent += `
     </text>
   </g>
   `;
@@ -58,4 +59,5 @@ svgContent += `</svg>`;
 
 fs.mkdirSync("dist", { recursive: true });
 fs.writeFileSync("dist/stocks-ticker.svg", svgContent);
-console.log("✔ SVG de ações animado com valores visíveis gerado!");
+
+console.log("✔ Ticker SVG animado com valores corrigidos!");
