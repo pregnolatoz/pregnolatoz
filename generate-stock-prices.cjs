@@ -1,32 +1,59 @@
 const fs = require("fs");
-const path = require("path");
 
-const outputPath = path.join(__dirname, "dist", "stocks-ticker.svg");
+const tickers = [
+  { name: "PETR4", color: "#007bff" },
+  { name: "MGLU3", color: "#28a745" },
+  { name: "IBOV", color: "#dc3545" },
+  { name: "SPX", color: "#17a2b8" }
+];
 
-fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+function generateRandomPercentage(base = 0, variance = 1) {
+  return (base + (Math.random() - 0.5) * variance).toFixed(2);
+}
 
-const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="100%" height="50" viewBox="0 0 800 50" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .bg { fill: #0d1117; }
-    .text { fill: #ccc; font-size: 16px; font-family: Arial, sans-serif; }
-    .positive { fill: #00ff88; }
-    .negative { fill: #ff4455; }
-  </style>
-  <rect class="bg" width="100%" height="100%" />
-  
-  <text x="10" y="30" class="text">PETR4: <tspan class="negative">
-    <animate attributeName="text" values="2.60%;2.61%;2.59%;2.60%" dur="4s" repeatCount="indefinite" /></tspan></text>
+function getColor(value) {
+  return value > 0 ? "#00ff90" : value < 0 ? "#ff4d4d" : "#cccccc";
+}
 
-  <text x="150" y="30" class="text">MGLU3: <tspan class="positive">
-    <animate attributeName="text" values="2.07%;2.08%;2.06%;2.07%" dur="4s" repeatCount="indefinite" /></tspan></text>
+const width = 600;
+const height = 100;
+const boxWidth = 120;
+const boxHeight = 30;
+const spacing = 20;
 
-  <text x="300" y="30" class="text">IBOV: <tspan class="negative">
-    <animate attributeName="text" values="-0.39%;-0.40%;-0.38%;-0.39%" dur="4s" repeatCount="indefinite" /></tspan></text>
+let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background:#0d1117" font-family="Arial, sans-serif">
+`;
 
-  <text x="450" y="30" class="text">SPX: <tspan class="positive">
-    <animate attributeName="text" values="0.10%;0.12%;0.09%;0.10%" dur="4s" repeatCount="indefinite" /></tspan></text>
-</svg>`;
+tickers.forEach((ticker, i) => {
+  const x = spacing + i * (boxWidth + spacing);
+  const y = (height - boxHeight) / 2;
+  const initialValue = generateRandomPercentage();
 
-fs.writeFileSync(outputPath, svgContent);
-console.log("✅ SVG dos tickers gerado em:", outputPath);
+  const keyframes = Array.from({ length: 20 }).map(() =>
+    generateRandomPercentage()
+  );
+
+  svgContent += `
+  <g>
+    <rect x="${x}" y="${y}" width="${boxWidth}" height="${boxHeight}" rx="8" ry="8" 
+      fill="#111" stroke="${ticker.color}" stroke-width="2" />
+    <text x="${x + 10}" y="${y + 20}" fill="#fff" font-size="14">${ticker.name}</text>
+    <text font-size="14" font-weight="bold" fill="${getColor(initialValue)}">
+      <textPath startOffset="100%" href="#${ticker.name}_path">
+        <tspan>
+          <animate attributeName="text" dur="6s" repeatCount="indefinite"
+            values="${keyframes.join(';')}" />
+        </tspan>
+      </textPath>
+    </text>
+    <path id="${ticker.name}_path" d="M ${x + 80},${y + 20} h 0.01" fill="none" />
+  </g>
+  `;
+});
+
+svgContent += `</svg>`;
+
+fs.mkdirSync("dist", { recursive: true });
+fs.writeFileSync("dist/stocks-ticker.svg", svgContent);
+console.log("✔ SVG de ações com valores animados gerado com sucesso!");
