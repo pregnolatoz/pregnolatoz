@@ -5,6 +5,7 @@ const path = require("path");
 const width = 800;
 const height = 200;
 const margin = 20;
+const drawRight = width - margin
 const marginRight = 43;    // espaço extra à direita para os labels Y
 const frames = 5;
 const duration = 15; // segundos
@@ -43,7 +44,9 @@ const values = allFrames.map(arr => {
     return `${i === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
   }).join(" ");
 }).join(";");
+
 const xLabels = ["11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"];
+
 const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${width + marginRight}" height="${height}" viewBox="0 0 ${width + marginRight} ${height}"
      xmlns="http://www.w3.org/2000/svg" style="background:#0d1117">
@@ -54,9 +57,14 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
   </style>
 
   <!-- horizontais -->
-  ${[0,0.25,0.5,0.75,1].map(v=>{
-    const y = margin + v*(height-2*margin);
-    return `<line x1="${margin}" y1="${y}" x2="${width-marginRight}" y2="${y}" class="grid"/>`;
+  ${[0, 0.25, 0.5, 0.75, 1].map(v => {
+    const y = margin + v * (height - 2 * margin);
+    return `<line 
+      x1="${margin}" 
+      y1="${y}" 
+      x2="${drawRight}" 
+      y2="${y}" 
+      class="grid"/>`;
   }).join("\n  ")}
 
   <!-- labels Y -->
