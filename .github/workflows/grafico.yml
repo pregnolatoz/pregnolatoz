@@ -22,7 +22,10 @@ jobs:
 
       - name: Generate Graph
         run: node generate-line-graph.cjs
-        
+
+      - name: Generate SVG Line Graph
+        run: node generate-svg-line-graph.cjs
+
       - name: Generate stock prices SVG
         run: node generate-stock-prices.cjs
 
