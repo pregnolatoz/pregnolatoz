@@ -67,6 +67,6 @@ function generateData(points = 60) {
 
   const imageBuffer = await canvasRenderService.renderToBuffer(config);
   fs.mkdirSync("dist", { recursive: true });
-  fs.writeFileSync("dist/line-graph.png", imageBuffer);
-  console.log("✔ Gráfico PNG gerado com sucesso em dist/line-graph.png");
+  fs.writeFileSync("line-graph.svg", imageBuffer);
+  console.log("✔ SVG animado gerado com sucesso em line-graph.svg");
 })();
