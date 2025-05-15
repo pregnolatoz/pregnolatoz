@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const width = 800;
+const width = 840;
 const height = 200;
 const margin = 20;
 const frames = 5;
