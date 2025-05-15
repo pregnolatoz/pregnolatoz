@@ -29,25 +29,22 @@ tickers.forEach((ticker, i) => {
   const x = spacing + i * (boxWidth + spacing);
   const y = (height - boxHeight) / 2;
   const initialValue = generateRandomPercentage();
-
-  const keyframes = Array.from({ length: 20 }).map(() =>
-    generateRandomPercentage()
-  );
+  const color = getColor(initialValue);
+  const keyframes = Array.from({ length: 10 })
+    .map(() => generateRandomPercentage())
+    .join(";");
 
   svgContent += `
   <g>
-    <rect x="${x}" y="${y}" width="${boxWidth}" height="${boxHeight}" rx="8" ry="8" 
-      fill="#111" stroke="${ticker.color}" stroke-width="2" />
+    <rect x="${x}" y="${y}" width="${boxWidth}" height="${boxHeight}" rx="8" ry="8"
+      fill="#111" stroke="${ticker.color}" stroke-width="2"/>
     <text x="${x + 10}" y="${y + 20}" fill="#fff" font-size="14">${ticker.name}</text>
-    <text font-size="14" font-weight="bold" fill="${getColor(initialValue)}">
-      <textPath startOffset="100%" href="#${ticker.name}_path">
-        <tspan>
-          <animate attributeName="text" dur="6s" repeatCount="indefinite"
-            values="${keyframes.join(';')}" />
-        </tspan>
-      </textPath>
+    <text x="${x + 70}" y="${y + 20}" font-size="14" fill="${color}">
+      <tspan>
+        <animate attributeName="text" dur="6s" repeatCount="indefinite"
+          values="${keyframes}" />
+      </tspan>
     </text>
-    <path id="${ticker.name}_path" d="M ${x + 80},${y + 20} h 0.01" fill="none" />
   </g>
   `;
 });
@@ -56,4 +53,4 @@ svgContent += `</svg>`;
 
 fs.mkdirSync("dist", { recursive: true });
 fs.writeFileSync("dist/stocks-ticker.svg", svgContent);
-console.log("✔ SVG de ações com valores animados gerado com sucesso!");
+console.log("✔ SVG de ações animado com valores visíveis gerado!");
