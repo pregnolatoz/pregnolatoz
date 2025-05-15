@@ -27,6 +27,10 @@ jobs:
 
       - name: Generate SVG
         run: node generate-line-graph.cjs
+        
+      - name: Generate stock prices SVG
+        run: node generate-stock-prices.cjs
+
 
       - name: Push to output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
