@@ -99,4 +99,3 @@ const svgContent = buildSVGAnimation();
 fs.mkdirSync("dist", { recursive: true });
 fs.writeFileSync("dist/smooth-graph.svg", svgContent);
 console.log("✔ SVG animado gerado com sucesso!");
-
