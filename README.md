@@ -3,7 +3,7 @@
 Above all, through statistics, I was able to integrate reason, method, and purpose, putting knowledge at the service of critical analysis and decision-making with real impact.
 
 <p align="center">
-  <img src="https://pregnolatoz.github.io/pregnolatoz/line-graph.svg" alt="Gráfico animado" />
+  <img src="https://pregnolatoz.github.io/pregnolatoz/line-graph.png" alt="Gráfico animado" />
 </p>
 
 <p align="center">
