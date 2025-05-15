@@ -1,7 +1,9 @@
 {
-  "name": "animated-line-graph",
+  "name": "line-graph-generator",
   "version": "1.0.0",
-  "main": "generate-line-graph.js",
-  "type": "module",
-  "dependencies": {}
+  "type": "commonjs",
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "chartjs-node-canvas": "^9.1.7"
+  }
 }
