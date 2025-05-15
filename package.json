@@ -4,7 +4,6 @@
   "type": "commonjs",
   "dependencies": {
     "chart.js": "^4.4.1",
-    "chartjs-node-canvas": "^4.1.7"
+    "chartjs-node-canvas": "4.0.7"
   }
 }
-
