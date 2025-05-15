@@ -5,7 +5,7 @@ const path = require("path");
 const width = 800;
 const height = 200;
 const margin = 20;
-const marginRight = 40;    // espaço extra à direita para os labels Y
+const marginRight = 43;    // espaço extra à direita para os labels Y
 const frames = 5;
 const duration = 15; // segundos
 
@@ -43,7 +43,7 @@ const values = allFrames.map(arr => {
     return `${i === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
   }).join(" ");
 }).join(";");
-
+const xLabels = ["11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"];
 const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${width + marginRight}" height="${height}" viewBox="0 0 ${width + marginRight} ${height}"
      xmlns="http://www.w3.org/2000/svg" style="background:#0d1117">
@@ -67,11 +67,12 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
   }).join("\n  ")}
 
    <!-- labels X na base -->
-  ${[0,10,20,30,40,50].map(v => {
+  ${["11:00,12:00,13:00,14:00,15:00,16:00,17:00,18:00"].map(v => {
     // calcule o x correspondente:
-    const px = margin + (v/50) * (width - margin*2 - marginRight);
-    return `<text x="${px}" y="${height-5}" class="axis" text-anchor="middle">${v}</text>`;
-  }).join("\n  ")}
+    ${xLabels.map((hour, i) => {
+  const px = margin + (i / (xLabels.length - 1)) * (width - 2*margin - marginRight);
+  return `<text x="${px.toFixed(2)}" y="${height - 5}" class="axis" text-anchor="middle">${hour}</text>`;
+}).join("\n  ")}
 
 \`;// fim do svg
 
