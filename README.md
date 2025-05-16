@@ -31,7 +31,7 @@ Above all, through statistics, I was able to integrate reason, method, and purpo
 <br>
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=python,r,azure,postgres,ai,git" alt="My Skills" />
+    <img src="https://skillicons.dev/icons?i=python,r,azure,postgres,git" alt="My Skills" />
   </a>
 </p>
 
